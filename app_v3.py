@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 from streamlit_drawable_canvas import st_canvas
 import plotly.graph_objects as go
 import os
+import io
+from PIL import Image
 
 # --- HELPER FUNCTION: TUMOR VISUALIZATION ---
 def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0): 
@@ -82,10 +84,11 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0):
     
     plt.tight_layout()
     
-    # Convert matplotlib figure to image for canvas
-    fig.canvas.draw()
-    image = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
-    image = image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+    # Convert matplotlib figure to image for canvas using BytesIO
+    buf = io.BytesIO()
+    fig.savefig(buf, format='png', facecolor='#0E1117')
+    buf.seek(0)
+    image = Image.open(buf)
     plt.close(fig)
     
     # 4. Display using drawable canvas in view mode
