@@ -90,11 +90,14 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0):
     buf.seek(0)
     plt.close(fig)
     
+    # Convert buffer to PIL Image and load data into memory
+    image = Image.open(buf).copy()
+    
     # 4. Display using drawable canvas in view mode
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=0,
-        background_image=buf,
+        background_image=image,
         height=600,
         width=600,
         drawing_mode="view",
