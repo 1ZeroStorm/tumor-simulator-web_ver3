@@ -5,11 +5,8 @@ from stable_baselines3 import PPO
 from analyzer_v3 import PatientAnalyzer
 from environment_v3 import CancerSimulation
 import matplotlib.pyplot as plt
-from streamlit_drawable_canvas import st_canvas
 import plotly.graph_objects as go
 import os
-import io
-from PIL import Image
 
 # --- HELPER FUNCTION: TUMOR VISUALIZATION ---
 def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0): 
@@ -56,55 +53,45 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0):
     # current resistances 0 < x < max_res, 
     # if current_resistances / max_res surpass [0, 1] close interval, then it will be clipped 0 or 1
 
-    # 3. Create background image with matplotlib
-    fig, ax = plt.subplots(figsize=(8, 8), facecolor='#0E1117')
-    ax.set_facecolor('#161B22')
-    ax.set_xlim(0, 1)
-    ax.set_ylim(0, 1)
-    ax.axis('off')
+    # 3. Create Plotly scatter plot with colorbar
+    fig = go.Figure()
     
-    # Plot cells with color mapping
-    scatter = ax.scatter(
-        cell_coords[:, 0],  # 1D array of x coords of every cell
-        cell_coords[:, 1],  # 1D array of y coords of every cell
-        c=norm_colors,
-        cmap='YlOrRd',  # yellow= low, orange= med, red = high
-        s=20,
-        alpha=0.8,  # 80% solid, 20% transparent
-        vmin=0,  # clipping the colors, checking norm_colors if theres below 0, keep the same color as 0
-        vmax=1   # this applied also to above 1
-    )
+    fig.add_trace(go.Scatter(
+        x=cell_coords[:, 0],
+        y=cell_coords[:, 1],
+        mode='markers',
+        marker=dict(
+            size=8,
+            color=norm_colors,
+            colorscale='YlOrRd',
+            showscale=True,
+            colorbar=dict(
+                title='Individual<br>Resistance',
+                thickness=15,
+                len=0.7,
+                x=1.02
+            ),
+            opacity=0.8,
+            line=dict(width=0)
+        ),
+        hoverinfo='skip',
+        showlegend=False
+    ))
     
-    # Add colorbar
-    cbar = plt.colorbar(scatter, ax=ax, fraction=0.046, pad=0.04)
-    cbar.set_label('Individual Resistance', color='#888888', fontsize=9)
-    cbar.ax.tick_params(colors='#888888', labelsize=8)
-    
-    ax.set_title(f"Live Population: {num_cells:,} cells", color='#888888', fontsize=12, pad=10)
-    
-    plt.tight_layout()
-    
-    # Convert matplotlib figure to image for canvas using BytesIO
-    buf = io.BytesIO()
-    fig.savefig(buf, format='png', facecolor='#0E1117')
-    buf.seek(0)
-    plt.close(fig)
-    
-    # Convert buffer to PIL Image and load data into memory
-    image = Image.open(buf).copy()
-    
-    # 4. Display using drawable canvas in view mode
-    canvas_result = st_canvas(
-        fill_color="rgba(255, 165, 0, 0.3)",
-        stroke_width=0,
-        background_image=image,
-        height=600,
+    fig.update_layout(
+        title=f"Live Population: {num_cells:,} cells",
+        xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[0, 1]),
+        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[0, 1]),
+        plot_bgcolor='#161B22',
+        paper_bgcolor='#0E1117',
+        font=dict(color='#888888', size=10),
         width=600,
-        drawing_mode="view",
-        key=f"canvas_{num_cells}"
+        height=600,
+        margin=dict(l=0, r=100, t=40, b=0),
+        hovermode=False
     )
     
-    return canvas_result
+    st.plotly_chart(fig, use_container_width=False)
 
 # --- CONFIGURATION ---
 st.set_page_config( 
