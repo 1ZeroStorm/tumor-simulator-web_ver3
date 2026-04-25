@@ -1,0 +1,8 @@
+streamlit
+pandas
+numpy
+gymnasium
+stable-baselines3
+matplotlib
+plotly
+streamlit_drawable_canvas
