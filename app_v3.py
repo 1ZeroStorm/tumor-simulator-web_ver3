@@ -88,14 +88,13 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0):
     buf = io.BytesIO()
     fig.savefig(buf, format='png', facecolor='#0E1117')
     buf.seek(0)
-    image = Image.open(buf)
     plt.close(fig)
     
     # 4. Display using drawable canvas in view mode
     canvas_result = st_canvas(
         fill_color="rgba(255, 165, 0, 0.3)",
         stroke_width=0,
-        background_image=image,
+        background_image=buf,
         height=600,
         width=600,
         drawing_mode="view",
