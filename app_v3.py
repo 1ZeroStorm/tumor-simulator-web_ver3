@@ -232,12 +232,15 @@ if uploaded_file is not None:
         with v_col3:
             st.markdown("<p style='text-align:center; color:#888888;'>Before Drug (Prior Duplication)</p>", unsafe_allow_html=True)
             create_tumor_visualization(c_row["Tumor Size"], st.session_state.cell_res_data)
+        st.write("")
         with v_col2:
             st.markdown("<p style='text-align:center; color:#888888;'>Before Drug (Post Duplication)</p>", unsafe_allow_html=True)
             create_tumor_visualization(b_row["Tumor Size"], st.session_state.cell_res_data)
+        st.write("")
         with v_col3:
             st.markdown(f"<p style='text-align:center; color:#888888;'>After {a_row['Action']}</p>", unsafe_allow_html=True)
             create_tumor_visualization(a_row["Tumor Size"], st.session_state.cell_res_data)
+        st.write("")
 
         # --- LOG TABLE ---
         st.markdown("---")
