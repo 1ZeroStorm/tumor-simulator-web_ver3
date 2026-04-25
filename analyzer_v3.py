@@ -24,8 +24,8 @@ class PatientAnalyzer:
              
             # for later version we utilize these 3:
             "resistance_speed": cancer_subset['Gene_D_Therapy'].std() * 0.1 if not cancer_subset.empty else 0.3,
-            "trap_sensitivity": cancer_subset['Gene_B_Target'].mean() / 10.0,
-            "tox_tolerance": 1.0 / cancer_subset['Gene_C_Metabolism'].mean()
+            "trap_sensitivity": cancer_subset['Gene_B_Immune'].mean() / 10.0,
+            "tox_tolerance": 1.0 / cancer_subset['Gene_C_Stromal'].mean()
         }
 
     def get_patient_profile(self, data=None):
