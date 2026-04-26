@@ -85,8 +85,8 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0):
         plot_bgcolor='#161B22',
         paper_bgcolor='#0E1117',
         font=dict(color='#888888', size=10),
-        width=100,
-        height=100,
+        width=600,
+        height=600,
         margin=dict(l=0, r=100, t=40, b=0),
         hovermode=False
     )
