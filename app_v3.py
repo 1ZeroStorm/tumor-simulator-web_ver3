@@ -85,10 +85,10 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0, extrat
         plot_bgcolor='#161B22',
         paper_bgcolor='#0E1117',
         font=dict(color='#888888', size=10),
-        width=400,   # Perkecil lebar sedikit
-        height=400,
-        margin=dict(l=10, r=10, t=50, b=10),
-        hovermode=False
+        width=550,   # Perbesar sedikit dari sebelumnya
+        height=450,  
+        margin=dict(l=20, r=20, t=50, b=20),
+        autosize=True # Memastikan responsif terhadap kolom
     )
     
     st.plotly_chart(fig, use_container_width=False)
@@ -230,25 +230,28 @@ if uploaded_file is not None:
 
         # --- UBAH BAGIAN INI ---
         
-        # Buat dua kolom untuk V1 dan V2
+        # --- BARIS 1: V1 DAN V2 ---
         col1, col2 = st.columns(2)
 
         with col1:
-            st.markdown("<p style='text-align:center; color:#888888; margin-bottom:0;'>Prior Duplication</p>", unsafe_allow_html=True)
-            create_tumor_visualization(c_row["Tumor Size"], st.session_state.cell_res_data, extratitle="Before Drug")
+            # Menggunakan Markdown dengan text-align center agar lurus dengan grafik
+            st.markdown("<h4 style='text-align: center; color: #888888;'>Prior Duplication</h4>", unsafe_allow_html=True)
+            create_tumor_visualization(c_row["Tumor Size"], st.session_state.cell_res_data, extratitle="")
 
         with col2:
-            st.markdown("<p style='text-align:center; color:#888888; margin-bottom:0;'>Post Duplication</p>", unsafe_allow_html=True)
-            create_tumor_visualization(b_row["Tumor Size"], st.session_state.cell_res_data, extratitle="Growth Phase")
+            st.markdown("<h4 style='text-align: center; color: #888888;'>Post Duplication</h4>", unsafe_allow_html=True)
+            create_tumor_visualization(b_row["Tumor Size"], st.session_state.cell_res_data, extratitle="")
 
-        # Baris baru untuk V3
         st.markdown("---")
-        # Gunakan kolom tengah agar V3 tidak terlalu lebar atau langsung panggil
-        _, col_mid, _ = st.columns([1, 2, 1]) 
-        with col_mid:
-            st.markdown(f"<p style='text-align:center; color:#2ECC71; font-weight:bold;'>Result: After {a_row['Action']}</p>", unsafe_allow_html=True)
-            create_tumor_visualization(a_row["Tumor Size"], st.session_state.cell_res_data, extratitle="Treatment Result")
 
+        # --- BARIS 2: V3 (DIPERBESAR & RECENTER) ---
+        # Rasio [1, 4, 1] membuat kolom tengah (V3) jauh lebih besar dan tetap di tengah
+        _, col_big, _ = st.columns([1, 4, 1]) 
+
+        with col_big:
+            st.markdown(f"<h3 style='text-align: center; color: #2ECC71;'>Final Result: After {a_row['Action']}</h3>", unsafe_allow_html=True)
+            # Karena container width True, V3 akan otomatis melebar mengikuti kolom 'col_big'
+            create_tumor_visualization(a_row["Tumor Size"], st.session_state.cell_res_data, extratitle="")
         # --- LOG TABLE ---
         st.markdown("---")
         st.subheader("📊 Detailed Treatment & Evolution Log")
