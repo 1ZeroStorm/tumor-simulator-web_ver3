@@ -230,7 +230,7 @@ if uploaded_file is not None:
 
         st.markdown("<p style='text-align:center; color:#888888;'>Before Drug (Prior Duplication)</p>", unsafe_allow_html=True)
         create_tumor_visualization(c_row["Tumor Size"], st.session_state.cell_res_data)
-        st.write("")
+        #st.write("")
         
         st.markdown("<p style='text-align:center; color:#888888;'>Before Drug (Post Duplication)</p>", unsafe_allow_html=True)
         create_tumor_visualization(b_row["Tumor Size"], st.session_state.cell_res_data)
