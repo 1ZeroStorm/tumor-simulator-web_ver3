@@ -85,9 +85,9 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0, extrat
         plot_bgcolor='#161B22',
         paper_bgcolor='#0E1117',
         font=dict(color='#888888', size=10),
-        autosize=True,
+        #autosize=True,
         margin=dict(l=0, r=0, t=30, b=0), # Set margin kiri-kanan ke 0
-        width=None, # Biarkan Streamlit yang menentukan lebarnya
+        width=500, # Biarkan Streamlit yang menentukan lebarnya
         height=500, # Konsisten untuk V3
         # Pastikan colorbar tidak mendorong grafik ke kiri
         coloraxis_colorbar=dict(x=1.0, xanchor='left')
