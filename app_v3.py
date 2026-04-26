@@ -85,9 +85,9 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0, extrat
         plot_bgcolor='#161B22',
         paper_bgcolor='#0E1117',
         font=dict(color='#888888', size=10),
-        width=500,
-        height=600,
-        #margin=dict(l=0, r=100, t=40, b=0),
+        width=400,   # Perkecil lebar sedikit
+        height=400,
+        margin=dict(l=10, r=10, t=50, b=10),
         hovermode=False
     )
     
@@ -228,17 +228,26 @@ if uploaded_file is not None:
         b_row = day_data[day_data['Status'] == "Before Drug (Post Duplication)"].iloc[0]
         a_row = day_data[day_data['Status'].str.contains("After")].iloc[0]
 
-        st.markdown("<p style='text-align:center; color:#888888;'>Before Drug (Prior Duplication)</p>", unsafe_allow_html=True)
-        create_tumor_visualization(c_row["Tumor Size"], st.session_state.cell_res_data, "Before Drug (Prior Duplication)")
-        #st.write("")
+        # --- UBAH BAGIAN INI ---
         
-        st.markdown("<p style='text-align:center; color:#888888;'>Before Drug (Post Duplication)</p>", unsafe_allow_html=True)
-        create_tumor_visualization(b_row["Tumor Size"], st.session_state.cell_res_data, "Before Drug (Post Duplication)")
-        #st.write("")
-        
-        st.markdown(f"<p style='text-align:center; color:#888888;'>After {a_row['Action']}</p>", unsafe_allow_html=True)
-        create_tumor_visualization(a_row["Tumor Size"], st.session_state.cell_res_data, "Before Drug (Post Duplication)")
-        #st.write("")
+        # Buat dua kolom untuk V1 dan V2
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown("<p style='text-align:center; color:#888888; margin-bottom:0;'>Prior Duplication</p>", unsafe_allow_html=True)
+            create_tumor_visualization(c_row["Tumor Size"], st.session_state.cell_res_data, extratitle="Before Drug")
+
+        with col2:
+            st.markdown("<p style='text-align:center; color:#888888; margin-bottom:0;'>Post Duplication</p>", unsafe_allow_html=True)
+            create_tumor_visualization(b_row["Tumor Size"], st.session_state.cell_res_data, extratitle="Growth Phase")
+
+        # Baris baru untuk V3
+        st.markdown("---")
+        # Gunakan kolom tengah agar V3 tidak terlalu lebar atau langsung panggil
+        _, col_mid, _ = st.columns([1, 2, 1]) 
+        with col_mid:
+            st.markdown(f"<p style='text-align:center; color:#2ECC71; font-weight:bold;'>Result: After {a_row['Action']}</p>", unsafe_allow_html=True)
+            create_tumor_visualization(a_row["Tumor Size"], st.session_state.cell_res_data, extratitle="Treatment Result")
 
         # --- LOG TABLE ---
         st.markdown("---")
