@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 import os
 
 # --- HELPER FUNCTION: TUMOR VISUALIZATION ---
-def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0): 
+def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0, extratitle): 
     # tumor size = 1000
     # resistance list: a list containing resistance level or all cells (ex: 2000 since we disinclude healthy tumors)
 
@@ -79,7 +79,7 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0):
     ))
     
     fig.update_layout(
-        title=f"Live Population: {num_cells:,} cells",
+        title=f"{extratitle}<br><sup>Live Population: {num_cells:,} cells<sup>",
         xaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[0, 1]),
         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, range=[0, 1]),
         plot_bgcolor='#161B22',
@@ -229,16 +229,16 @@ if uploaded_file is not None:
         a_row = day_data[day_data['Status'].str.contains("After")].iloc[0]
 
         st.markdown("<p style='text-align:center; color:#888888;'>Before Drug (Prior Duplication)</p>", unsafe_allow_html=True)
-        create_tumor_visualization(c_row["Tumor Size"], st.session_state.cell_res_data)
+        create_tumor_visualization(c_row["Tumor Size"], st.session_state.cell_res_data, "Before Drug (Prior Duplication)")
         #st.write("")
         
         st.markdown("<p style='text-align:center; color:#888888;'>Before Drug (Post Duplication)</p>", unsafe_allow_html=True)
-        create_tumor_visualization(b_row["Tumor Size"], st.session_state.cell_res_data)
-        st.write("")
+        create_tumor_visualization(b_row["Tumor Size"], st.session_state.cell_res_data, "Before Drug (Post Duplication)")
+        #st.write("")
         
         st.markdown(f"<p style='text-align:center; color:#888888;'>After {a_row['Action']}</p>", unsafe_allow_html=True)
-        create_tumor_visualization(a_row["Tumor Size"], st.session_state.cell_res_data)
-        st.write("")
+        create_tumor_visualization(a_row["Tumor Size"], st.session_state.cell_res_data, "Before Drug (Post Duplication)")
+        #st.write("")
 
         # --- LOG TABLE ---
         st.markdown("---")
