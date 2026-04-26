@@ -98,7 +98,7 @@ st.set_page_config(
     page_title="OncoSteer: Evolutionary AI", # your browser bar on top
     page_icon="🧬",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="auto"
 )
 
 MODEL_PATH = "peacekeeper_final_azure" 
