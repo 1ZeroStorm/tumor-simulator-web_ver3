@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 import os
 
 # --- HELPER FUNCTION: TUMOR VISUALIZATION ---
-def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0, extratitle): 
+def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0, extratitle=None): 
     # tumor size = 1000
     # resistance list: a list containing resistance level or all cells (ex: 2000 since we disinclude healthy tumors)
 
