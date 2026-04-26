@@ -85,10 +85,12 @@ def create_tumor_visualization(tumor_size, resistance_list, max_res=15.0, extrat
         plot_bgcolor='#161B22',
         paper_bgcolor='#0E1117',
         font=dict(color='#888888', size=10),
-        width=550,   # Perbesar sedikit dari sebelumnya
-        height=450,  
-        margin=dict(l=20, r=20, t=50, b=20),
-        autosize=True # Memastikan responsif terhadap kolom
+        autosize=True,
+        margin=dict(l=0, r=0, t=30, b=0), # Set margin kiri-kanan ke 0
+        width=None, # Biarkan Streamlit yang menentukan lebarnya
+        height=500, # Konsisten untuk V3
+        # Pastikan colorbar tidak mendorong grafik ke kiri
+        coloraxis_colorbar=dict(x=1.0, xanchor='left')
     )
     
     st.plotly_chart(fig, use_container_width=False)
@@ -243,18 +245,20 @@ if uploaded_file is not None:
             create_tumor_visualization(b_row["Tumor Size"], st.session_state.cell_res_data, extratitle="")
 
         st.markdown("---")
+        
+        # Menggunakan kolom dengan rasio yang lebih ramping agar V3 besar tapi tetap terkunci di tengah
+        _, col_v3, _ = st.columns([0.2, 0.6, 0.2]) 
 
-        # --- BARIS 2: V3 (DIPERBESAR & RECENTER) ---
-        # Rasio [1, 4, 1] membuat kolom tengah (V3) jauh lebih besar dan tetap di tengah
-        _, col_big, _ = st.columns([1, 4, 1]) 
-
-        with col_big:
-            st.markdown(f"<h3 style='text-align: center; color: #2ECC71;'>Final Result: After {a_row['Action']}</h3>", unsafe_allow_html=True)
-            # Karena container width True, V3 akan otomatis melebar mengikuti kolom 'col_big'
+        with col_v3:
+            # Menggunakan <div> dengan flexbox untuk memastikan alignment absolut
+            st.markdown(f"""
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                    <h2 style="color: #2ECC71; margin-bottom: -10px;">Final Result: After {a_row['Action']}</h2>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            # Panggil fungsi visualisasi
             create_tumor_visualization(a_row["Tumor Size"], st.session_state.cell_res_data, extratitle="")
-        # --- LOG TABLE ---
-        st.markdown("---")
-        st.subheader("📊 Detailed Treatment & Evolution Log")
         
         # Formatting Resist A and B to 2 decimal places
         formatted_df = df_hist.copy()
