@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 class PatientAnalyzer:
     def __init__(self, csv_path=None, df=None):
@@ -13,19 +14,34 @@ class PatientAnalyzer:
     def get_strategic_profile(self):
         """Filters for cancer cells and calculates their strength based on raw data."""
         
-        # Deletes the rows that are healthy by only keeping 'Tumor' status
         cancer_subset = self.df[self.df['Disease_Status'] == 'Tumor']
+    
+        if cancer_subset.empty:
+            return {"avg_growth": 14.0, "max_res_a": 15.0, "tox_increment": 1.0}
 
-        # Calculates metrics directly from the filtered dataframe
+        # 1. Max Efficacy dari Gene_D (Therapy target)
+        base_eff = cancer_subset['Gene_D_Therapy'].mean() / 20.0
+        max_eff_a = np.clip(base_eff, 0.7, 0.95)
+        
+        avg_immune = cancer_subset['Gene_B_Immune'].mean()
+        dynamic_res_b = max(1.0, 15.0 - avg_immune)
+        
+        stromal_score = cancer_subset['Gene_C_Stromal'].mean()
+        # Logika: Jika Stromal rendah (misal 5), kenaikan toksisitas tinggi (misal 1.5)
+        # Jika Stromal tinggi (misal 15), kenaikan toksisitas rendah (misal 0.5)
+        dynamic_tox_inc = max(0.4, 2.0 - (stromal_score / 10.0))
+
         return {
-            "avg_growth": cancer_subset['Gene_A_Oncogene'].mean() if not cancer_subset.empty else 14.0,
-            "max_res_a": cancer_subset['Gene_D_Therapy'].max() if not cancer_subset.empty else 15.0,
-            "starting_res_a": cancer_subset['Gene_D_Therapy'].mean() if not cancer_subset.empty else 9.0,
-             
-            # for later version we utilize these 3:
-            "resistance_speed": cancer_subset['Gene_D_Therapy'].std() * 0.1 if not cancer_subset.empty else 0.3,
-            "trap_sensitivity": cancer_subset['Gene_B_Immune'].mean() / 10.0,
-            "tox_tolerance": 1.0 / cancer_subset['Gene_C_Stromal'].mean()
+            "normalized_init_tumor_size": 1,
+            "initial_tumor_size": len(cancer_subset),
+            "avg_growth": cancer_subset['Gene_A_Oncogene'].mean(),
+            "max_res_a": cancer_subset['Gene_D_Therapy'].max(),
+            "starting_res_a": cancer_subset['Gene_D_Therapy'].mean(),
+            "starting_res_b": float(dynamic_res_b),
+            "max_efficacy_a": max_eff_a,
+            "tox_increment": float(dynamic_tox_inc),
+            "trap_sensitivity": avg_immune / 20.0 # Kita asumsikan jika skor imun awal sudah ada, 
+            # maka Obat A akan lebih mudah mengekspos sel tersebut lebih jauh.
         }
 
     def get_patient_profile(self, data=None):
@@ -50,7 +66,7 @@ class PatientAnalyzer:
 # Example of how to run it:
 if __name__ == "__main__":
     # Point to your synthetic CSV file
-    analyzer = PatientAnalyzer("Gene_Expression_Analysis_and_Disease_Relationship_Synthetic.csv")
+    analyzer = PatientAnalyzer("data/Gene_Expression_Analysis_and_Disease_Relationship_Synthetic.csv")
     
     # Get the calculated values
     profile = analyzer.get_strategic_profile()
