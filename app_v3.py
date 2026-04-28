@@ -147,7 +147,29 @@ else:
 
     if sidebar_info_mode == sidebar_info_list[0]:
         st.markdown("##### What is OncoSteer?")
-        st.markdown("")
+        st.markdown("""
+            ### 🧬 Understanding Genomic Input Data
+
+            Users can access the website and upload a **CSV file** containing genomic data. This dataset serves as the foundational "environment" for our Reinforcement Learning agent, representing the unique biological profile of each patient.
+
+            The CSV file must contain the following columns, which map directly to the simulation parameters:
+
+            * **`Disease_Status`**: Indicates whether the sample is **Tumor** or **Healthy_Control**. This helps the system distinguish between the baseline health of the patient and the active malignancy.
+            * **`Gene_A_Oncogene` (Tumor Proliferation Engine)**: 
+                Represents the core driver of the cancer. Higher expression of this gene dictates both the **Initial Tumor Size** and the **Average Growth Rate**. It acts as the "motor" that the AI must counteract; the more aggressive this gene, the faster the tumor recovers between treatments.
+            * **`Gene_D_Therapy` (Baseline Drug A Resistance)**: 
+                Defines the starting point for resistance toward the primary therapy (**Drug A**). It represents the patient's innate genetic predisposition to resist standard treatment even before the first dose is administered.
+            * **`Gene_B_Immune` (Dynamic Resistance to Drug B)**: 
+                Used as the starting point for resistance toward the secondary "Trap" drug (**Drug B**). This maps how the immune-related genetic profile shields the tumor from targeted attacks. The AI's objective is to use Drug A to "break" this barrier, lowering the resistance derived from this gene to a critical threshold.
+            * **`Gene_C_Stromal` (Toxicity Sensitivity)**: 
+                Indicates the sensitivity of the surrounding healthy stromal tissue. In our model, this determines the **Toxicity Increment** per dose. A high value means the patient’s body is more vulnerable to the side effects of the drugs, requiring the AI to be more cautious to avoid reaching the lethal toxicity limit.
+
+            ---
+
+            ### 📊 Simulation & Testing
+            Users can also access **Pre-loaded Test Data** available on the dashboard. This allows for real-time demonstrations using diverse patient profiles that were not included in the original training dataset, proving the **generalizability** and **robustness** of the PPO agent in handling unseen genomic signatures.
+            """)
+
     elif sidebar_info_mode == sidebar_info_list[1]:
         st.markdown("##### Leveraging Azure ML for advanced AI training")
         st.markdown(
@@ -407,4 +429,4 @@ if uploaded_file is not None:
         st.pyplot(fig)
 
 else:
-    st.info("Select 'Get Started' and use a data source in the sidebar to begin.")
+    st.info("Select 'Get Started' and use a data source in the sidebar to begin. See what type of files can be uploaded at 'What is oncosteer?'")
