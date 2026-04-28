@@ -148,11 +148,16 @@ else:
     if sidebar_info_mode == sidebar_info_list[0]:
         st.markdown("##### 🧬 What is OncoSteer?")
         st.markdown("""
-            OncoSteer is an AI system that simulates tumor evolution to help discover more timely and adaptive therapy strategies. By leveraging reinforcement learning and genomic data, OncoSteer explores various treatment scenarios virtually to identify the optimal moments for targeting cancer cells.
+            OncoSteer is an AI system that simulates tumor evolution to \
+                    help discover more timely and adaptive therapy strategies. \
+                    By leveraging reinforcement learning and genomic data, OncoSteer \
+                    explores various treatment scenarios virtually to identify the optimal moments for targeting cancer cells.
+
+            ---
                     
             ##### 👩‍🔬 Understanding Genomic Input Data
-
-            Users can access the website and upload a **CSV file** containing genomic data. This dataset serves as the foundational "environment" for our Reinforcement Learning agent, representing the unique biological profile of each patient.
+                    
+            Users can access the website and upload a **CSV file** containing genomic data in 'Get Started' tab. This dataset serves as the foundational "environment" for our Reinforcement Learning agent, representing the unique biological profile of each patient.
 
             The CSV file must contain the following columns, which map directly to the simulation parameters:
 
@@ -168,9 +173,20 @@ else:
 
             ---
 
-            ### 📊 Simulation & Testing
+            #### 📊 Simulation & Testing
             Users can also access **Pre-loaded Test Data** available on the dashboard. This allows for real-time demonstrations using diverse patient profiles that were not included in the original training dataset, proving the **generalizability** and **robustness** of the PPO agent in handling unseen genomic signatures.
-            """)
+            
+            ---
+                     
+            ##### 👨‍🔬 Credits
+            * GitHub Repository: https://github.com/1ZeroStorm/tumor-simulator-web_ver3
+            * model used: ```oncosteer_100000_steps.zip``` 
+            * System created by: Yohanes Arya Prasetyayuda and Noor Ashlee Almaghvira Yusup
+            * Proposal link: https://docs.google.com/document/d/1ePfBkiYfofNK5Bbgw_yV3Pgh6xh1CeYRNghwmq8NQIo/edit?usp=sharing
+                    """)
+
+            
+
 
     elif sidebar_info_mode == sidebar_info_list[1]:
         st.markdown("##### Leveraging Azure ML for advanced AI training")
