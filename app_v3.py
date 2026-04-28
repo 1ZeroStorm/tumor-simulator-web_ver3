@@ -112,6 +112,18 @@ def load_model(): # returns the PPO model
         return PPO.load(MODEL_PATH)
     return None
 
+st.markdown(
+    """
+    <style>
+    /* Tag meta tidak muncul secara visual, tapi terbaca oleh sistem verifikasi */
+    </style>
+    <head>
+        <meta name="dicoding:email" content="yohanesaryap@gmail.com">
+    </head>
+    """,
+    unsafe_allow_html=True
+)
+
 st.title("🧬 OncoSteer")
 st.markdown("### Steering Tumor Evolution Toward Therapeutic Vulnerability.")
 
