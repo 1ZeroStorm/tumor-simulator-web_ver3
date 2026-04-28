@@ -427,6 +427,6 @@ if uploaded_file is not None:
         
         plt.tight_layout()
         st.pyplot(fig)
-
+ 
 else:
     st.info("Select 'Get Started' and use a data source in the sidebar to begin. See what type of files can be uploaded at 'What is oncosteer?'")
