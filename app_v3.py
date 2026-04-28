@@ -148,6 +148,8 @@ else:
     if sidebar_info_mode == sidebar_info_list[0]:
         st.markdown("##### What is OncoSteer?")
         st.markdown("""
+            OncoSteer is an AI system that simulates tumor evolution to help discover more timely and adaptive therapy strategies. By leveraging reinforcement learning and genomic data, OncoSteer explores various treatment scenarios virtually to identify the optimal moments for targeting cancer cells.
+                    
             ### 🧬 Understanding Genomic Input Data
 
             Users can access the website and upload a **CSV file** containing genomic data. This dataset serves as the foundational "environment" for our Reinforcement Learning agent, representing the unique biological profile of each patient.
